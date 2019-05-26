@@ -4,79 +4,67 @@
 <head>
 	<meta charset=utf-8>
 	<title>My first three.js app</title>
-	<style>
-		body {
-			margin: 0;
-		}
-
-		canvas {
-			width: 100%;
-			height: 100%
-		}
-
-		#info {
-			width: 100%;
-			text-align: center;
-			z-index: 100;
-			display: block;
-			color: white;
-			position: absolute;
-			text-align: center;
-			top: 50%;
-
-
-			/* Animation for text on start */
-			animation-name: centerToTop;
-			animation-duration: 1.5s;
-			animation-delay: 1.5s;
-			animation-fill-mode: forwards;
-			animation-timing-function: ease-in-out;
-
-
-		}
-
-		/* Animation keyframes for text on start */
-		@keyframes centerToTop {
-			0% {
-				top: 50%;
-			}
-
-			100% {
-				top: 10%;
-			}
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="css/stylesheet.css">
 </head>
 
 <body>
-	<div id="info">Description</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min.js"></script>
+	<img class="logo" src="https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558894424/logo-3d_mjce3s.png">
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+
 	<script>
 		var scene = new THREE.Scene();
-		scene.background = new THREE.Color(0x0000ff);
 		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-		var renderer = new THREE.WebGLRenderer();
+		var renderer = new THREE.WebGLRenderer({ antialias: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		document.body.appendChild(renderer.domElement);
 
-		var geometry = new THREE.BoxGeometry(1, 1, 1);
+		// Load a texture
+		var texLoader = new THREE.TextureLoader();
+		texLoader.setCrossOrigin("anonymous");
+		earthAlbedo = texLoader.load("https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558889876/Albedo2048_q4bw2s.jpg");
+		earthBump = texLoader.load("https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558889876/Bump2048_odybtn.jpg");
+		cloudMap = texLoader.load("https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558889876/Clouds2048_fbaq1g.png");
 
-		var wireframe = new THREE.WireframeGeometry(geometry);
+		earthMaterial = new THREE.MeshPhongMaterial({
+			map: earthAlbedo,
+			bumpMap: earthBump,
+			bumpScale: 0.2,
+			shininess: 0,
+		});
 
-		var line = new THREE.LineSegments(wireframe);
-		line.material.depthTest = false;
-		line.material.opacity = 1;
-		line.material.transparent = true;
+		cloudMaterial = new THREE.MeshBasicMaterial({
+			alphaMap: cloudMap,
+			transparent: true,
+			opacity: 0.4,
+		});
 
-		scene.add(line);
+		var earthGeometry = new THREE.SphereGeometry(5, 32, 32);
+		var earthSphere = new THREE.Mesh(earthGeometry, earthMaterial);
+		scene.add(earthSphere);
 
-		camera.position.z = 5;
+		var cloudGeometry = new THREE.SphereGeometry(5.2,32,32);
+		var cloudSphere = new THREE.Mesh(cloudGeometry, cloudMaterial);
+		scene.add(cloudSphere);
+
+		camera.position.z = 12.5;
+		camera.lookAt(scene.position);
+
+		//create two spotlights to illuminate the scene
+		var spotLight = new THREE.SpotLight(0xffffff);
+		spotLight.position.set(-40, 60, -10);
+		spotLight.intensity = 2;
+		scene.add(spotLight);
+
+		var spotLight2 = new THREE.SpotLight(0x5192e9);
+		spotLight2.position.set(40, -60, 30);
+		spotLight2.intensity = 1.5;
+		scene.add(spotLight2);
 
 		function animate() {
-			line.rotation.x += 0.01;
-			line.rotation.y += 0.01;
-			line.opacity -= 0.01;
+			earthSphere.rotation.y += 0.001;
+			cloudSphere.rotation.y += 0.001;
 
 			requestAnimationFrame(animate);
 			renderer.render(scene, camera);
