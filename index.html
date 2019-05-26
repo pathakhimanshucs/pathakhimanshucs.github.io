@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset=utf-8>
+	<title>My first three.js app</title>
+	<style>
+		body {
+			margin: 0;
+		}
+
+		canvas {
+			width: 100%;
+			height: 100%
+		}
+
+		#info {
+			width: 100%;
+			text-align: center;
+			z-index: 100;
+			display: block;
+			color: white;
+			position: absolute;
+			text-align: center;
+			top: 50%;
+
+
+			/* Animation for text on start */
+			animation-name: centerToTop;
+			animation-duration: 1.5s;
+			animation-delay: 1.5s;
+			animation-fill-mode: forwards;
+			animation-timing-function: ease-in-out;
+
+
+		}
+
+		/* Animation keyframes for text on start */
+		@keyframes centerToTop {
+			0% {
+				top: 50%;
+			}
+
+			100% {
+				top: 10%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div id="info">Description</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/threejs/r84/three.min.js"></script>
+	<script>
+		var scene = new THREE.Scene();
+		scene.background = new THREE.Color(0x0000ff);
+		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+		var renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		document.body.appendChild(renderer.domElement);
+
+		var geometry = new THREE.BoxGeometry(1, 1, 1);
+
+		var wireframe = new THREE.WireframeGeometry(geometry);
+
+		var line = new THREE.LineSegments(wireframe);
+		line.material.depthTest = false;
+		line.material.opacity = 1;
+		line.material.transparent = true;
+
+		scene.add(line);
+
+		camera.position.z = 5;
+
+		function animate() {
+			line.rotation.x += 0.01;
+			line.rotation.y += 0.01;
+			line.opacity -= 0.01;
+
+			requestAnimationFrame(animate);
+			renderer.render(scene, camera);
+		}
+		animate();
+	</script>
+</body>
+
+</html>
