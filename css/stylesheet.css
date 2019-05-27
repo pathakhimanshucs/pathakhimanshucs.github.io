@@ -26,6 +26,7 @@ canvas {
    }
 }
 .logo {
+    pointer-events: none;
     transform-origin: center;
     text-align: center;
     z-index: 100;
