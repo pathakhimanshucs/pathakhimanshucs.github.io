@@ -8,12 +8,19 @@
 </head>
 
 <body>
+
 	<!-- Star Particle Background -->
 	<div id="particles-js"></div>
 
 	<!-- Logo -->
-	<img class="logo" src="https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558894424/logo-3d_mjce3s.png">
-	
+	<img class="logo" src="https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558959697/logo-nms_ijqjyy.png">
+
+	<div class="footer">
+		<span><a href="" target="_blank">Himanshu Pathak</a></span>
+		<span>|</span>
+		<span><a href="https://github.com/pathakhimanshucs/snamakoolcom" target="_blank">Github</a></span>
+	</div>
+
 	<!-- Import Scripts -->
 	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
 	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
@@ -136,8 +143,7 @@
 
 	<!-- ThreeJs Code -->
 	<script>
-
-
+		window.addEventListener('resize', onWindowResize, false);
 		var scene = new THREE.Scene();
 		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -195,7 +201,7 @@
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			renderer.render(scene, camera);
+			animate();
 		}
 
 		function animate() {
@@ -209,5 +215,4 @@
 		animate();
 	</script>
 </body>
-
 </html>
