@@ -8,17 +8,143 @@
 </head>
 
 <body>
+	<!-- Star Particle Background -->
+	<div id="particles-js"></div>
+
+	<!-- Logo -->
 	<img class="logo" src="https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558894424/logo-3d_mjce3s.png">
+	
+	<!-- Import Scripts -->
 	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
 	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/GPUParticleSystem.js"></script>
+	<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
+	<!-- Particlejs config -->
 	<script>
+		particlesJS("particles-js", {
+			"particles": {
+				"number": {
+					"value": 200,
+					"density": {
+						"enable": true,
+						"value_area": 868.1035095057337
+					}
+				},
+				"color": {
+					"value": "#ffffff"
+				},
+				"shape": {
+					"type": "circle",
+					"stroke": {
+						"width": 0,
+						"color": "#000000"
+					},
+					"polygon": {
+						"nb_sides": 3
+					},
+					"image": {
+						"src": "img/github.svg",
+						"width": 100,
+						"height": 100
+					}
+				},
+				"opacity": {
+					"value": 0.5,
+					"random": false,
+					"anim": {
+						"enable": false,
+						"speed": 1,
+						"opacity_min": 0.1,
+						"sync": false
+					}
+				},
+				"size": {
+					"value": 2,
+					"random": true,
+					"anim": {
+						"enable": true,
+						"speed": 2,
+						"size_min": 0.1,
+						"sync": false
+					}
+				},
+				"line_linked": {
+					"enable": false,
+					"distance": 150,
+					"color": "#ffffff",
+					"opacity": 0.4,
+					"width": 1
+				},
+				"move": {
+					"enable": true,
+					"speed": 0.25,
+					"direction": "none",
+					"random": true,
+					"straight": false,
+					"out_mode": "out",
+					"bounce": false,
+					"attract": {
+						"enable": false,
+						"rotateX": 600,
+						"rotateY": 1200
+					}
+				}
+			},
+			"interactivity": {
+				"detect_on": "canvas",
+				"events": {
+					"onhover": {
+						"enable": true,
+						"mode": "bubble"
+					},
+					"onclick": {
+						"enable": true,
+						"mode": "push"
+					},
+					"resize": true
+				},
+				"modes": {
+					"grab": {
+						"distance": 400,
+						"line_linked": {
+							"opacity": 1
+						}
+					},
+					"bubble": {
+						"distance": 200,
+						"size": 4,
+						"duration": 2,
+						"opacity": 0.7141407993507816,
+						"speed": 3
+					},
+					"repulse": {
+						"distance": 71.92807192807193,
+						"duration": 0.4
+					},
+					"push": {
+						"particles_nb": 4
+					},
+					"remove": {
+						"particles_nb": 2
+					}
+				}
+			},
+			"retina_detect": true
+		});
+	</script>
+
+	<!-- ThreeJs Code -->
+	<script>
+
+
 		var scene = new THREE.Scene();
 		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-		var renderer = new THREE.WebGLRenderer({ antialias: true });
+		var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		document.body.appendChild(renderer.domElement);
+		var canvasPlanet = document.body.appendChild(renderer.domElement);
+		canvasPlanet.classList.add("planetCanvas");
 
 		// Load a texture
 		var texLoader = new THREE.TextureLoader();
@@ -26,25 +152,28 @@
 		earthAlbedo = texLoader.load("https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558889876/Albedo2048_q4bw2s.jpg");
 		earthBump = texLoader.load("https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558889876/Bump2048_odybtn.jpg");
 		cloudMap = texLoader.load("https://res.cloudinary.com/dfjqjf1kx/image/upload/v1558889876/Clouds2048_fbaq1g.png");
+		cloudMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-		earthMaterial = new THREE.MeshPhongMaterial({
+		earthMaterial = new THREE.MeshStandardMaterial({
 			map: earthAlbedo,
 			bumpMap: earthBump,
-			bumpScale: 0.2,
-			shininess: 0,
+			bumpScale: 0.7,
+			roughness: 0.85,
+			emissive: 0x2194ce,
+			emissiveIntensity: 0.1,
 		});
 
 		cloudMaterial = new THREE.MeshBasicMaterial({
 			alphaMap: cloudMap,
 			transparent: true,
-			opacity: 0.4,
+			opacity: 0.8,
 		});
 
 		var earthGeometry = new THREE.SphereGeometry(5, 32, 32);
 		var earthSphere = new THREE.Mesh(earthGeometry, earthMaterial);
 		scene.add(earthSphere);
 
-		var cloudGeometry = new THREE.SphereGeometry(5.2,32,32);
+		var cloudGeometry = new THREE.SphereGeometry(5.2, 32, 32);
 		var cloudSphere = new THREE.Mesh(cloudGeometry, cloudMaterial);
 		scene.add(cloudSphere);
 
@@ -52,21 +181,29 @@
 		camera.lookAt(scene.position);
 
 		//create two spotlights to illuminate the scene
-		var spotLight = new THREE.SpotLight(0xffffff);
-		spotLight.position.set(-40, 60, -10);
-		spotLight.intensity = 2;
+		var spotLight = new THREE.SpotLight(0xfaff00);
+		spotLight.position.set(-30, 50, 30);
+		spotLight.intensity = 1;
 		scene.add(spotLight);
 
 		var spotLight2 = new THREE.SpotLight(0x5192e9);
-		spotLight2.position.set(40, -60, 30);
-		spotLight2.intensity = 1.5;
+		spotLight2.position.set(30, -50, 30);
+		spotLight2.intensity = 2;
 		scene.add(spotLight2);
+
+		function onWindowResize() {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			renderer.render(scene, camera);
+		}
 
 		function animate() {
 			earthSphere.rotation.y += 0.001;
 			cloudSphere.rotation.y += 0.001;
 
 			requestAnimationFrame(animate);
+
 			renderer.render(scene, camera);
 		}
 		animate();
