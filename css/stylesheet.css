@@ -3,34 +3,28 @@ body {
     overflow:hidden;
     background-color: black;
 }
-
 canvas {
     width: 100%;
     height: 100%;
-
     opacity: 0;
-    /* Animation for opacity on start */
+   /* Animation for opacity on start */
     animation-name: opacityLogo;
     animation-duration: 1s;
     animation-delay: 1.5s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in;
 }
-
 .planetCanvas{
     pointer-events: none;
 }
-
 @keyframes opacityLogo{
     0%{
         opacity: 0;
-    }
-
+   }
     100%{
         opacity: 1;
-    }
+   }
 }
-
 .logo {
     transform-origin: center;
     text-align: center;
@@ -41,64 +35,52 @@ canvas {
     text-align: center;
     top: calc(50% - 150px);
     left: calc(50% - 300px);
-
-    /* Animation for text on start */
+   /* Animation for text on start */
     animation-name: centerToTop;
     animation-duration: 1.5s;
     animation-delay: 1.5s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
-
-
 }
-
 /* Animation keyframes for text on start */
 @keyframes centerToTop {
     0% {
         top: calc(50% - 150px);
-    }
-
+   }
     100% {
         top: 5%;
-    }
+   }
 }
-
 #particles-js {
     position: absolute;
     width: 100%;
     height: 100%;
-  }
-
-  #particles-js2 {
+}
+#particles-js2 {
     position: absolute;
     width: 100%;
     height: 100%;
-  }
-
-  .footer {
+}
+.footer {
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     text-align: right;
     padding-bottom: 20px;
-
     font-size: 16px;
     color: #999;
-
     opacity: 0;
-    /* Animation for opacity on start */
+   /* Animation for opacity on start */
     animation-name: opacityLogo;
     animation-duration: 1s;
     animation-delay: 1.5s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in;
 }
-
 .footer span {
     padding-right: 20px;
 }
-
 .footer a {
     color: #bbb;
 }
