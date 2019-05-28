@@ -26,7 +26,6 @@
 	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
 	<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/GPUParticleSystem.js"></script>
 	<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
 
 	<!-- Particlejs config -->
 	<script>
@@ -187,54 +186,6 @@
 		camera.position.z = 12.5;
 		camera.lookAt(scene.position);
 
-		//Drag rotate
-		var isDragging = false;
-		var previousMousePosition = {
-			x: 0,
-			y: 0
-		};
-		$(renderer.domElement).on('mousedown', function (e) {
-			isDragging = true;
-		})
-			.on('mousemove', function (e) {
-				var deltaMove = {
-					x: e.offsetX - previousMousePosition.x,
-					y: e.offsetY - previousMousePosition.y
-				};
-
-				if (isDragging) {
-
-					var deltaRotationQuaternion = new THREE.Quaternion()
-						.setFromEuler(new THREE.Euler(
-							toRadians(deltaMove.y * 1),
-							toRadians(deltaMove.x * 1),
-							0,
-							'XYZ'
-						));
-
-					earthSphere.quaternion.multiplyQuaternions(deltaRotationQuaternion, earthSphere.quaternion);
-					cloudSphere.quaternion.multiplyQuaternions(deltaRotationQuaternion, cloudSphere.quaternion);
-				}
-
-				previousMousePosition = {
-					x: e.offsetX,
-					y: e.offsetY
-				};
-			});
-		/* */
-
-		$(document).on('mouseup', function (e) {
-			isDragging = false;
-		});
-
-		function toRadians(angle) {
-			return angle * (Math.PI / 180);
-		}
-
-		function toDegrees(angle) {
-			return angle * (180 / Math.PI);
-		}
-
 		//create two spotlights to illuminate the scene
 		var spotLight = new THREE.SpotLight(0xfaff00);
 		spotLight.position.set(-30, 50, 30);
@@ -243,7 +194,7 @@
 
 		var spotLight2 = new THREE.SpotLight(0x5192e9);
 		spotLight2.position.set(30, -50, 30);
-		spotLight2.intensity = 2;
+		spotLight2.intensity = 1.5;
 		scene.add(spotLight2);
 
 		function onWindowResize() {
@@ -254,8 +205,8 @@
 		}
 
 		function animate() {
-			// earthSphere.rotation.y += 0.001;
-			// cloudSphere.rotation.y += 0.001;
+			earthSphere.rotation.y += 0.001;
+			cloudSphere.rotation.y += 0.001;
 
 			requestAnimationFrame(animate);
 
