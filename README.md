@@ -1,2 +1,3 @@
 # planet vis-threejs
-Snamakool.com made using three.js
+Planet render made using three.js
+https://pathakhimanshucs.github.io/web-planet-render/
